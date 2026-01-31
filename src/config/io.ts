@@ -14,6 +14,7 @@ import {
 import { DuplicateAgentDirError, findDuplicateAgentDirs } from "./agent-dirs.js";
 import {
   applyCompactionDefaults,
+  applyGatewayDefaults,
   applyContextPruningDefaults,
   applyAgentDefaults,
   applyLoggingDefaults,
@@ -255,11 +256,13 @@ export function createConfigIO(overrides: ConfigIoDeps = {}) {
         deps.logger.warn(`Config warnings:\\n${details}`);
       }
       warnIfConfigFromFuture(validated.config, deps.logger);
-      const cfg = applyModelDefaults(
-        applyCompactionDefaults(
-          applyContextPruningDefaults(
-            applyAgentDefaults(
-              applySessionDefaults(applyLoggingDefaults(applyMessageDefaults(validated.config))),
+      const cfg = applyGatewayDefaults(
+        applyModelDefaults(
+          applyCompactionDefaults(
+            applyContextPruningDefaults(
+              applyAgentDefaults(
+                applySessionDefaults(applyLoggingDefaults(applyMessageDefaults(validated.config))),
+              ),
             ),
           ),
         ),
@@ -306,11 +309,13 @@ export function createConfigIO(overrides: ConfigIoDeps = {}) {
     const exists = deps.fs.existsSync(configPath);
     if (!exists) {
       const hash = hashConfigRaw(null);
-      const config = applyTalkApiKey(
-        applyModelDefaults(
-          applyCompactionDefaults(
-            applyContextPruningDefaults(
-              applyAgentDefaults(applySessionDefaults(applyMessageDefaults({}))),
+      const config = applyGatewayDefaults(
+        applyTalkApiKey(
+          applyModelDefaults(
+            applyCompactionDefaults(
+              applyContextPruningDefaults(
+                applyAgentDefaults(applySessionDefaults(applyMessageDefaults({}))),
+              ),
             ),
           ),
         ),
@@ -430,10 +435,12 @@ export function createConfigIO(overrides: ConfigIoDeps = {}) {
         parsed: parsedRes.parsed,
         valid: true,
         config: normalizeConfigPaths(
-          applyTalkApiKey(
-            applyModelDefaults(
-              applyAgentDefaults(
-                applySessionDefaults(applyLoggingDefaults(applyMessageDefaults(validated.config))),
+          applyGatewayDefaults(
+            applyTalkApiKey(
+              applyModelDefaults(
+                applyAgentDefaults(
+                  applySessionDefaults(applyLoggingDefaults(applyMessageDefaults(validated.config))),
+                ),
               ),
             ),
           ),

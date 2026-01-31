@@ -75,6 +75,8 @@ const OLLAMA_DEFAULT_COST = {
   cacheWrite: 0,
 };
 
+const BLABLADOR_BASE_URL = "https://api.helmholtz-blablador.fz-juelich.de/v1";
+
 interface OllamaModel {
   name: string;
   modified_at: string;
@@ -416,6 +418,28 @@ export async function resolveImplicitProviders(params: {
     resolveApiKeyFromProfiles({ provider: "ollama", store: authStore });
   if (ollamaKey) {
     providers.ollama = { ...(await buildOllamaProvider()), apiKey: ollamaKey };
+  }
+
+  const blabladorKey =
+    resolveEnvApiKeyVarName("blablador") ??
+    resolveApiKeyFromProfiles({ provider: "blablador", store: authStore });
+  if (blabladorKey) {
+    providers.blablador = {
+      baseUrl: BLABLADOR_BASE_URL,
+      api: "openai-completions",
+      apiKey: blabladorKey,
+      models: [
+        {
+          id: "alias-large",
+          name: "Blablador Alias Large",
+          reasoning: false,
+          input: ["text"],
+          cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+          contextWindow: 128000,
+          maxTokens: 8192,
+        },
+      ],
+    };
   }
 
   return providers;
