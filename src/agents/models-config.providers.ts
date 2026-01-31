@@ -429,7 +429,7 @@ export async function resolveImplicitProviders(params: {
     }
     providers.blablador = {
       baseUrl: BLABLADOR_BASE_URL,
-      api: "openai-completions",
+      api: "openai-responses",
       apiKey: blabladorKey,
       models: [
         {
