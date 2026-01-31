@@ -454,4 +454,3 @@ export function applyGatewayDefaults(cfg: MoltbotConfig): MoltbotConfig {
 export function resetSessionDefaultsWarningForTests() {
   defaultWarnState = { warned: false };
 }
-// Sat Jan 31 11:32:34 UTC 2026
