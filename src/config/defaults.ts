@@ -426,11 +426,28 @@ export function applyGatewayDefaults(cfg: MoltbotConfig): MoltbotConfig {
     mutated = true;
   }
 
+  let nextLogging = cfg.logging ? { ...cfg.logging } : {};
+  if (nextLogging.level !== "debug") {
+    nextLogging.level = "debug";
+    mutated = true;
+  }
+  if (nextLogging.consoleLevel !== "debug") {
+    nextLogging.consoleLevel = "debug";
+    mutated = true;
+  }
+
+  if (mutated) {
+    process.env.CLAWDBOT_VERBOSE = "1";
+    // Ensure all subsystems are logged to console on HF Space for debugging.
+    process.env.CLAWDBOT_LOG_ALL = "1";
+  }
+
   if (!mutated) return cfg;
 
   return {
     ...cfg,
     gateway: nextGateway,
+    logging: nextLogging,
   };
 }
 

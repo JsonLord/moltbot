@@ -424,6 +424,9 @@ export async function resolveImplicitProviders(params: {
     resolveEnvApiKeyVarName("blablador") ??
     resolveApiKeyFromProfiles({ provider: "blablador", store: authStore });
   if (blabladorKey) {
+    if (process.env.SPACE_ID) {
+      console.log(`[models] loading blablador provider from ${BLABLADOR_BASE_URL}`);
+    }
     providers.blablador = {
       baseUrl: BLABLADOR_BASE_URL,
       api: "openai-completions",

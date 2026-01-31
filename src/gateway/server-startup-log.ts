@@ -45,5 +45,9 @@ export function logGatewayStartup(params: {
         consoleMessage: `Hugging Face Space detected. Gateway token: ${chalk.greenBright(token)}`,
       });
     }
+    const hasBlabladorKey = Boolean(process.env.BLABLADOR_API_KEY);
+    params.log.info(`Blablador API key present: ${hasBlabladorKey}`, {
+      consoleMessage: `Blablador API key present: ${hasBlabladorKey ? chalk.greenBright("YES") : chalk.redBright("NO")}`,
+    });
   }
 }
