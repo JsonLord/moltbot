@@ -16,7 +16,7 @@ RUN if [ -n "$CLAWDBOT_DOCKER_APT_PACKAGES" ]; then \
       rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*; \
     fi
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml .npmrc* ./
 COPY ui/package.json ./ui/package.json
 COPY patches ./patches
 COPY scripts ./scripts
@@ -32,9 +32,23 @@ RUN pnpm ui:build
 
 ENV NODE_ENV=production
 
+# Expose the port for Hugging Face Spaces
+ENV PORT=7860
+ENV CLAWDBOT_GATEWAY_PORT=7860
+EXPOSE 7860
+
+# Create default config to avoid "Missing config" error
+RUN mkdir -p /home/node/.moltbot && \
+    echo '{"gateway": {"mode": "local", "bind": "lan", "port": 7860}}' > /home/node/.moltbot/moltbot.json && \
+    chown -R node:node /home/node/.moltbot
+
+ENV MOLTBOT_CONFIG_PATH=/home/node/.moltbot/moltbot.json
+ENV CLAWDBOT_GATEWAY_TOKEN=moltbot
+
 # Security hardening: Run as non-root user
 # The node:22-bookworm image includes a 'node' user (uid 1000)
 # This reduces the attack surface by preventing container escape via root privileges
 USER node
 
-CMD ["node", "dist/index.js"]
+# Start the gateway in the foreground.
+CMD ["node", "moltbot.mjs", "gateway", "run", "--bind", "lan", "--port", "7860"]

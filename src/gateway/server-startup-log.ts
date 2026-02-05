@@ -37,4 +37,17 @@ export function logGatewayStartup(params: {
   if (params.isNixMode) {
     params.log.info("gateway: running in Nix mode (config managed externally)");
   }
+
+  if (process.env.SPACE_ID) {
+    const token = params.cfg.gateway?.auth?.token ?? process.env.CLAWDBOT_GATEWAY_TOKEN;
+    if (token) {
+      params.log.info(`Hugging Face Space detected. Gateway token: ${token}`, {
+        consoleMessage: `Hugging Face Space detected. Gateway token: ${chalk.greenBright(token)}`,
+      });
+    }
+    const hasBlabladorKey = Boolean(process.env.BLABLADOR_API_KEY);
+    params.log.info(`Blablador API key present: ${hasBlabladorKey}`, {
+      consoleMessage: `Blablador API key present: ${hasBlabladorKey ? chalk.greenBright("YES") : chalk.redBright("NO")}`,
+    });
+  }
 }

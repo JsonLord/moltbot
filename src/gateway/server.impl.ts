@@ -66,6 +66,7 @@ import { hasConnectedMobileNode } from "./server-mobile-nodes.js";
 import { resolveSessionKeyForRun } from "./server-session-key.js";
 import { startGatewaySidecars } from "./server-startup.js";
 import { logGatewayStartup } from "./server-startup-log.js";
+import { runLlmConnectionTest } from "./server-startup-test.js";
 import { startGatewayTailscaleExposure } from "./server-tailscale.js";
 import { loadGatewayTlsRuntime } from "./server/tls.js";
 import { createWizardSessionTracker } from "./server-wizard-sessions.js";
@@ -483,6 +484,9 @@ export async function startGatewayServer(
     log,
     isNixMode,
   });
+  if (process.env.SPACE_ID) {
+    void runLlmConnectionTest({ cfg: cfgAtStart, log });
+  }
   scheduleGatewayUpdateCheck({ cfg: cfgAtStart, log, isNixMode });
   const tailscaleCleanup = await startGatewayTailscaleExposure({
     tailscaleMode,

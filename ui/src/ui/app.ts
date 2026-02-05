@@ -82,6 +82,7 @@ import { loadAssistantIdentity as loadAssistantIdentityInternal } from "./contro
 declare global {
   interface Window {
     __CLAWDBOT_CONTROL_UI_BASE_PATH__?: string;
+    __CLAWDBOT_GATEWAY_TOKEN__?: string;
   }
 }
 

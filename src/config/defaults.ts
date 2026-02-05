@@ -390,6 +390,67 @@ export function applyCompactionDefaults(cfg: MoltbotConfig): MoltbotConfig {
   };
 }
 
+export function applyGatewayDefaults(cfg: MoltbotConfig): MoltbotConfig {
+  const isHuggingFace = Boolean(process.env.SPACE_ID);
+  if (!isHuggingFace) return cfg;
+
+  let mutated = false;
+  const nextGateway = cfg.gateway ? { ...cfg.gateway } : {};
+
+  // On Hugging Face Spaces, we are always behind a proxy.
+  // Trust the internal network.
+  if (!nextGateway.trustedProxies) {
+    nextGateway.trustedProxies = ["10.0.0.0/8"];
+    mutated = true;
+  }
+
+  // Allow easier access to Control UI on HF Spaces.
+  const controlUi = nextGateway.controlUi ? { ...nextGateway.controlUi } : {};
+  if (controlUi.allowInsecureAuth === undefined) {
+    controlUi.allowInsecureAuth = true;
+    mutated = true;
+  }
+  if (controlUi.dangerouslyDisableDeviceAuth === undefined) {
+    controlUi.dangerouslyDisableDeviceAuth = true;
+    mutated = true;
+  }
+  if (mutated) {
+    nextGateway.controlUi = controlUi;
+  }
+
+  // Set a default token if none is provided, to avoid random tokens in HF logs.
+  if (!nextGateway.auth?.token && !process.env.CLAWDBOT_GATEWAY_TOKEN) {
+    const auth = nextGateway.auth ? { ...nextGateway.auth } : {};
+    auth.token = "moltbot";
+    nextGateway.auth = auth;
+    mutated = true;
+  }
+
+  let nextLogging = cfg.logging ? { ...cfg.logging } : {};
+  if (nextLogging.level !== "debug") {
+    nextLogging.level = "debug";
+    mutated = true;
+  }
+  if (nextLogging.consoleLevel !== "debug") {
+    nextLogging.consoleLevel = "debug";
+    mutated = true;
+  }
+
+  if (mutated) {
+    process.env.CLAWDBOT_VERBOSE = "1";
+    // Ensure all subsystems are logged to console on HF Space for debugging.
+    process.env.CLAWDBOT_LOG_ALL = "1";
+  }
+
+  if (!mutated) return cfg;
+
+  return {
+    ...cfg,
+    gateway: nextGateway,
+    logging: nextLogging,
+  };
+}
+
 export function resetSessionDefaultsWarningForTests() {
   defaultWarnState = { warned: false };
 }

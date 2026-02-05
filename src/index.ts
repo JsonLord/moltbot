@@ -38,6 +38,14 @@ loadDotEnv({ quiet: true });
 normalizeEnv();
 ensureMoltbotCliOnPath();
 
+if (process.env.CLAWDBOT_VERBOSE === "1") {
+  import("./globals.js").then((mod) => mod.setVerbose(true));
+}
+
+if (process.env.CLAWDBOT_LOG_ALL === "1") {
+  import("./logging/console.js").then((mod) => mod.setConsoleSubsystemFilter(null));
+}
+
 // Capture all console output into structured logs while keeping stdout/stderr behavior.
 enableConsoleCapture();
 

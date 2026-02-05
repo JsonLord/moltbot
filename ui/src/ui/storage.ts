@@ -23,7 +23,7 @@ export function loadSettings(): UiSettings {
 
   const defaults: UiSettings = {
     gatewayUrl: defaultUrl,
-    token: "",
+    token: (window as any).__CLAWDBOT_GATEWAY_TOKEN__ || "",
     sessionKey: "main",
     lastActiveSessionKey: "main",
     theme: "system",
@@ -43,7 +43,7 @@ export function loadSettings(): UiSettings {
         typeof parsed.gatewayUrl === "string" && parsed.gatewayUrl.trim()
           ? parsed.gatewayUrl.trim()
           : defaults.gatewayUrl,
-      token: typeof parsed.token === "string" ? parsed.token : defaults.token,
+      token: typeof parsed.token === "string" ? (parsed.token || defaults.token) : defaults.token,
       sessionKey:
         typeof parsed.sessionKey === "string" && parsed.sessionKey.trim()
           ? parsed.sessionKey.trim()

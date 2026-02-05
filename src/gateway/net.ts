@@ -48,10 +48,37 @@ function parseRealIp(realIp?: string): string | undefined {
   return normalizeIp(stripOptionalPort(raw));
 }
 
+function ip4ToInt(ip: string): number {
+  return (
+    ip.split(".").reduce((acc, octet) => (acc << 8) + parseInt(octet, 10), 0) >>> 0
+  );
+}
+
+function isIpInCidr(ip: string, cidr: string): boolean {
+  try {
+    if (!cidr.includes("/")) return ip === cidr;
+    const [range, bits] = cidr.split("/");
+    const mask = ~(2 ** (32 - parseInt(bits!, 10)) - 1) >>> 0;
+    return (ip4ToInt(ip) & mask) === (ip4ToInt(range!) & mask);
+  } catch {
+    return false;
+  }
+}
+
 export function isTrustedProxyAddress(ip: string | undefined, trustedProxies?: string[]): boolean {
   const normalized = normalizeIp(ip);
-  if (!normalized || !trustedProxies || trustedProxies.length === 0) return false;
-  return trustedProxies.some((proxy) => normalizeIp(proxy) === normalized);
+  if (!normalized) return false;
+
+  // On Hugging Face Spaces, trust the internal proxy network by default.
+  if (process.env.SPACE_ID && normalized.startsWith("10.")) return true;
+
+  if (!trustedProxies || trustedProxies.length === 0) return false;
+  return trustedProxies.some((proxy) => {
+    if (proxy.includes("/")) {
+      return isIpInCidr(normalized, proxy);
+    }
+    return normalizeIp(proxy) === normalized;
+  });
 }
 
 export function resolveGatewayClientIp(params: {

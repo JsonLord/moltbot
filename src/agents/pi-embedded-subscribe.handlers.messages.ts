@@ -87,6 +87,9 @@ export function handleMessageUpdate(
   }
 
   if (chunk) {
+    if (process.env.SPACE_ID) {
+      ctx.log.debug(`assistant delta: ${JSON.stringify(chunk)}`);
+    }
     ctx.state.deltaBuffer += chunk;
     if (ctx.blockChunker) {
       ctx.blockChunker.append(chunk);
@@ -176,6 +179,9 @@ export function handleMessageEnd(
   });
 
   const text = ctx.stripBlockTags(rawText, { thinking: false, final: false });
+  if (process.env.SPACE_ID) {
+    ctx.log.debug(`assistant message end: ${JSON.stringify(text)}`);
+  }
   const rawThinking =
     ctx.state.includeReasoning || ctx.state.streamReasoning
       ? extractAssistantThinking(assistantMessage) || extractThinkingFromTaggedText(rawText)

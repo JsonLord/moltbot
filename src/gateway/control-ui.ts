@@ -170,10 +170,11 @@ interface ControlUiInjectionOpts {
   basePath: string;
   assistantName?: string;
   assistantAvatar?: string;
+  gatewayToken?: string;
 }
 
 function injectControlUiConfig(html: string, opts: ControlUiInjectionOpts): string {
-  const { basePath, assistantName, assistantAvatar } = opts;
+  const { basePath, assistantName, assistantAvatar, gatewayToken } = opts;
   const script =
     `<script>` +
     `window.__CLAWDBOT_CONTROL_UI_BASE_PATH__=${JSON.stringify(basePath)};` +
@@ -183,6 +184,7 @@ function injectControlUiConfig(html: string, opts: ControlUiInjectionOpts): stri
     `window.__CLAWDBOT_ASSISTANT_AVATAR__=${JSON.stringify(
       assistantAvatar ?? DEFAULT_ASSISTANT_IDENTITY.avatar,
     )};` +
+    (gatewayToken ? `window.__CLAWDBOT_GATEWAY_TOKEN__=${JSON.stringify(gatewayToken)};` : "") +
     `</script>`;
   // Check if already injected
   if (html.includes("__CLAWDBOT_ASSISTANT_NAME__")) return html;
@@ -214,6 +216,10 @@ function serveIndexHtml(res: ServerResponse, indexPath: string, opts: ServeIndex
       agentId: resolvedAgentId,
       basePath,
     }) ?? identity.avatar;
+
+  const gatewayToken =
+    config?.gateway?.auth?.token ?? process.env.CLAWDBOT_GATEWAY_TOKEN ?? undefined;
+
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.setHeader("Cache-Control", "no-cache");
   const raw = fs.readFileSync(indexPath, "utf8");
@@ -222,6 +228,7 @@ function serveIndexHtml(res: ServerResponse, indexPath: string, opts: ServeIndex
       basePath,
       assistantName: identity.name,
       assistantAvatar: avatarValue,
+      gatewayToken,
     }),
   );
 }
