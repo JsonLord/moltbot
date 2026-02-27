@@ -6,7 +6,7 @@ export const TAB_GROUPS = [
     label: "Control",
     tabs: ["overview", "channels", "instances", "sessions", "cron"],
   },
-  { label: "Agent", tabs: ["skills", "nodes"] },
+  { label: "Agent", tabs: ["clawhub", "skills", "nodes"] },
   { label: "Settings", tabs: ["config", "debug", "logs"] },
 ] as const;
 
@@ -16,6 +16,7 @@ export type Tab =
   | "instances"
   | "sessions"
   | "cron"
+  | "clawhub"
   | "skills"
   | "nodes"
   | "chat"
@@ -29,6 +30,7 @@ const TAB_PATHS: Record<Tab, string> = {
   instances: "/instances",
   sessions: "/sessions",
   cron: "/cron",
+  clawhub: "/clawhub",
   skills: "/skills",
   nodes: "/nodes",
   chat: "/chat",
@@ -114,6 +116,8 @@ export function iconForTab(tab: Tab): IconName {
       return "fileText";
     case "cron":
       return "loader";
+    case "clawhub":
+      return "box";
     case "skills":
       return "zap";
     case "nodes":
@@ -141,6 +145,8 @@ export function titleForTab(tab: Tab) {
       return "Sessions";
     case "cron":
       return "Cron Jobs";
+    case "clawhub":
+      return "ClawHub";
     case "skills":
       return "Skills";
     case "nodes":
@@ -170,6 +176,8 @@ export function subtitleForTab(tab: Tab) {
       return "Inspect active sessions and adjust per-session defaults.";
     case "cron":
       return "Schedule wakeups and recurring agent runs.";
+    case "clawhub":
+      return "Browse and install skills from ClawHub.";
     case "skills":
       return "Manage skill availability and API key injection.";
     case "nodes":

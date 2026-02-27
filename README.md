@@ -1,3 +1,13 @@
+---
+title: Moltbot
+emoji: 🦞
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # 🦞 Moltbot — Personal AI Assistant
 
 <p align="center">

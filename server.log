@@ -1,0 +1,8 @@
+2026-02-27T22:16:43.567Z Gateway failed to start: gateway already running (pid 26535); lock timeout after 5000ms
+If the gateway is supervised, stop it with: moltbot gateway stop
+2026-02-27T22:16:44.295Z Port 7860 is already in use.
+2026-02-27T22:16:44.318Z - pid 26535 jules: moltbot-gateway (*:7860)
+2026-02-27T22:16:44.320Z - Gateway already running locally. Stop it (moltbot gateway stop) or use a different port.
+2026-02-27T22:16:44.493Z Gateway service status unknown; if supervised, stop it first.
+2026-02-27T22:16:44.499Z Tip: moltbot gateway stop
+2026-02-27T22:16:44.499Z Or: systemctl --user stop moltbot-gateway.service

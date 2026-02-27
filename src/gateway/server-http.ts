@@ -30,6 +30,9 @@ import { applyHookMappings } from "./hooks-mapping.js";
 import { handleOpenAiHttpRequest } from "./openai-http.js";
 import { handleOpenResponsesHttpRequest } from "./openresponses-http.js";
 import { handleToolsInvokeHttpRequest } from "./tools-invoke-http.js";
+import { handleClawhubHttpRequest } from "./server-clawhub.js";
+import { handleClawhubApiHttpRequest } from "./server-clawhub-api.js";
+import { handleApiDocsHttpRequest } from "./server-api-docs.js";
 
 type SubsystemLogger = ReturnType<typeof createSubsystemLogger>;
 
@@ -271,6 +274,17 @@ export function createGatewayHttpServer(opts: {
         if (await handleA2uiHttpRequest(req, res)) return;
         if (await canvasHost.handleHttpRequest(req, res)) return;
       }
+
+      const url = new URL(req.url ?? "/", `http://${req.headers.host ?? "localhost"}`);
+      if (url.pathname === "/health") {
+        sendJson(res, 200, { status: "ok" });
+        return;
+      }
+
+      if (await handleApiDocsHttpRequest(req, res)) return;
+      if (await handleClawhubApiHttpRequest(req, res)) return;
+      if (handleClawhubHttpRequest(req, res)) return;
+
       if (controlUiEnabled) {
         if (
           handleControlUiAvatarRequest(req, res, {

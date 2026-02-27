@@ -51,6 +51,7 @@ import {
   rotateDeviceToken,
 } from "./controllers/devices";
 import { renderSkills } from "./views/skills";
+import { renderClawhub } from "./views/clawhub";
 import { renderChatControls, renderTab, renderThemeToggle } from "./app-render.helpers";
 import { loadChannels } from "./controllers/channels";
 import { loadPresence } from "./controllers/presence";
@@ -328,6 +329,10 @@ export function renderApp(state: AppViewState) {
               onRemove: (job) => removeCronJob(state, job),
               onLoadRuns: (jobId) => loadCronRuns(state, jobId),
             })
+          : nothing}
+
+        ${state.tab === "clawhub"
+          ? renderClawhub({})
           : nothing}
 
         ${state.tab === "skills"
