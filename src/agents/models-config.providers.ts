@@ -363,6 +363,24 @@ export async function resolveImplicitProviders(params: {
   agentDir: string;
 }): Promise<ModelsConfig["providers"]> {
   const providers: Record<string, ProviderConfig> = {};
+
+  providers["custom-openai"] = {
+    baseUrl: "https://harvesthealth-harvesthealth-gemma-inference.hf.space/v1",
+    api: "openai-completions",
+    apiKey: "dummy-key", // Avoid missing apiKey error
+    models: [
+      {
+        id: "Qwen/Qwen2.5-Coder-3B-Instruct",
+        name: "Qwen 2.5 Coder 3B Instruct",
+        reasoning: false,
+        input: ["text"],
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+        contextWindow: 128000,
+        maxTokens: 8192,
+      },
+    ],
+  };
+
   const authStore = ensureAuthProfileStore(params.agentDir, {
     allowKeychainPrompt: false,
   });

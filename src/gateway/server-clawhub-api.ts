@@ -1,8 +1,8 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { exec } from "node:child_process";
+import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 
-const execAsync = promisify(exec);
+const execFileAsync = promisify(execFile);
 
 export type ClawhubApiRequestOptions = {
   // If we need any options later like auth tokens
@@ -71,15 +71,12 @@ export async function handleClawhubApiHttpRequest(
          ]
       };
 
-      try {
-         const { stdout } = await execAsync(`npx clawdhub search "${query}"`);
-         // Output parsing logic here if needed.
-         // For now just returning raw stdout as message if we can't parse JSON.
-         sendJson(res, 200, { ok: true, output: stdout, skills: searchData.skills });
-      } catch (e: any) {
-         // If it fails, return error
-         sendJson(res, 500, { ok: false, error: e.message });
-      }
+      // Proxy to the internal FastAPI backend running on localhost:8000
+      const fastApiUrl = `http://localhost:8000/api/clawhub/search${query ? `?q=${encodeURIComponent(query)}` : ""}`;
+      const response = await fetch(fastApiUrl, { method: "GET" });
+      const data = await response.json();
+
+      sendJson(res, response.status, data);
       return true;
     } catch (e: any) {
       sendJson(res, 500, { ok: false, error: e.message });
@@ -96,13 +93,16 @@ export async function handleClawhubApiHttpRequest(
          return true;
       }
 
-      // Execute `npx clawdhub install <name>`
-      const { stdout, stderr } = await execAsync(`npx clawdhub install ${skillName}`);
+      // Proxy to the internal FastAPI backend running on localhost:8000
+      const fastApiUrl = `http://localhost:8000/api/clawhub/install`;
+      const response = await fetch(fastApiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: skillName }),
+      });
+      const data = await response.json();
 
-      // We also need to check if config is missing.
-      // The requirement says: "give a warning in the logs if skills need to be configured via further credentials etc."
-      // The skills status API handles missing config detection natively if the skill is installed into ./skills.
-      sendJson(res, 200, { ok: true, output: stdout, errorOutput: stderr });
+      sendJson(res, response.status, data);
       return true;
     } catch (e: any) {
       sendJson(res, 500, { ok: false, error: e.message });
