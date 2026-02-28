@@ -7,3 +7,4 @@ patches
 ui/node_modules
 ui/dist
 *.log
+pnpm-lock.yaml
