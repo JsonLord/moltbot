@@ -66,9 +66,7 @@ export async function handleClawhubApiHttpRequest(
       // Let's try requiring it if it exposes an API.
       // For safety, I will implement a placeholder that succeeds.
       const searchData = {
-         skills: [
-            { name: "test-skill", description: "A test skill" }
-         ]
+        skills: [{ name: "test-skill", description: "A test skill" }],
       };
 
       // Proxy to the internal FastAPI backend running on localhost:8000
@@ -89,8 +87,8 @@ export async function handleClawhubApiHttpRequest(
       const body = await readJsonBody(req);
       const skillName = body.name;
       if (!skillName) {
-         sendJson(res, 400, { ok: false, error: "Missing skill name" });
-         return true;
+        sendJson(res, 400, { ok: false, error: "Missing skill name" });
+        return true;
       }
 
       // Proxy to the internal FastAPI backend running on localhost:8000

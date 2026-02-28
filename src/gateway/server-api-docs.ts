@@ -8,7 +8,7 @@ const __dirname = dirname(__filename);
 
 export async function handleApiDocsHttpRequest(
   req: IncomingMessage,
-  res: ServerResponse
+  res: ServerResponse,
 ): Promise<boolean> {
   const url = new URL(req.url ?? "/", `http://${req.headers.host ?? "localhost"}`);
 
