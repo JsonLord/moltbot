@@ -1,6 +1,0 @@
-INFO:     Started server process [93454]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
-2026-02-27T23:29:24.883Z Gateway auth is set to token, but no token is configured.
-Set gateway.auth.token (or CLAWDBOT_GATEWAY_TOKEN), or pass --token.

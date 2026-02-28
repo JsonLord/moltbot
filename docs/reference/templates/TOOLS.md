@@ -1,41 +1,70 @@
----
-summary: "Workspace template for TOOLS.md"
-read_when:
-  - Bootstrapping a workspace manually
----
 # TOOLS.md - Local Notes
 
-Skills define *how* tools work. This file is for *your* specifics — the stuff that's unique to your setup.
+Environment-specific values only (IDs, paths, and where secrets live).
+Skills define how tools work.
 
-## What Goes Here
+## Secrets and config
+- Canonical .env: ~/.agent/.env
+- Compatibility symlinks: ~/<workspace>/.env, ~/<workspace>/crm/.env
+- Platform config: ~/.agent/config.json
 
-Things like:
-- Camera names and locations
-- SSH hosts and aliases  
-- Preferred voices for TTS
-- Speaker/room names
-- Device nicknames
-- Anything environment-specific
+## Attribution
+- When leaving permanent text (comments, messages, notes), prefix with
+  "<emoji> <AgentName>:" unless asked to ghostwrite
 
-## Examples
+## Primary Messaging Platform (e.g., Telegram)
+- Group ID: <your-group-id>
 
-```markdown
-### Cameras
-- living-room → Main area, 180° wide angle
-- front-door → Entrance, motion-triggered
+| Topic | Thread ID |
+|-------|-----------|
+| <topic-name> | <id> |
+| <topic-name> | <id> |
+| <topic-name> | <id> |
+| cron-updates | <id> |
+| knowledge-base | <id> |
+| financials | <id> |
 
-### SSH
-- home-server → 192.168.1.100, user: admin
+## Topic behavior (quick)
+- <topic>: <behavior description, e.g., "cron-owned; respond to follow-ups only">
+- <topic>: <behavior description, e.g., "CRM queries and follow-ups">
+- <topic>: <behavior description, e.g., "failures only">
+- <topic>: <behavior description, e.g., "owner only; never share outside DM">
 
-### TTS
-- Preferred voice: "Nova" (warm, slightly British)
-- Default speaker: Kitchen HomePod
-```
+## Secondary Platform (e.g., Slack)
 
-## Why Separate?
+| Channel | ID |
+|---------|----|
+| <channel-name> | <id> |
+| <channel-name> | <id> |
 
-Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
+## Project Management (e.g., Asana)
+- Workspace: <workspace-name> (<workspace-id>)
 
----
+| Project | ID |
+|---------|-----|
+| <project-name> | <id> |
+| <project-name> | <id> |
 
-Add whatever helps you do your job. This is your cheat sheet.
+## Paths
+- Email CLI: <path to email tool>
+- Agent CLI: <path to coding agent>
+- Logs: ~/<workspace>/data/logs/ (unified: all.jsonl),
+  SQLite mirror: ~/<workspace>/data/logs.db
+
+## API tokens
+Stored in ~/.agent/.env. See .env.example for the canonical list.
+
+## Voice Memos
+- **Inbound:** User can send voice memos. The gateway auto-transcribes
+  them to text.
+- **Outbound:** Use the tts tool to reply as a voice note.
+- **Rule:** Only reply with voice when explicitly asked. Default to text.
+
+## Content preferences
+- <Add user-specific content preferences here>
+
+## Dual prompt stack
+- Default: root .md files (<primary-model>)
+- Fallback: codex-prompts/ (<secondary-model>, loaded when active)
+- Switching is configured in your agent framework's config and requires
+  a gateway restart
