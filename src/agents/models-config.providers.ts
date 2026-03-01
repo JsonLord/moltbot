@@ -365,7 +365,7 @@ export async function resolveImplicitProviders(params: {
   const providers: Record<string, ProviderConfig> = {};
 
   providers["custom-openai"] = {
-    baseUrl: "https://harvesthealth-harvesthealth-gemma-inference.hf.space/v1",
+    baseUrl: "http://127.0.0.1:8000/v1",
     api: "openai-completions",
     apiKey: "dummy-key", // Avoid missing apiKey error
     models: [

@@ -1,0 +1,6 @@
+[90m2026-02-28T18:32:34.271Z[39m [35m[canvas][39m [36mhost mounted at http://0.0.0.0:7860/__moltbot__/canvas/ (root /home/jules/clawd/canvas)[39m
+[90m2026-02-28T18:32:34.395Z[39m [36m[heartbeat][39m [36mstarted[39m
+[90m2026-02-28T18:32:34.405Z[39m [36m[gateway][39m [36magent model: custom-openai/Qwen/Qwen2.5-Coder-3B-Instruct[39m
+[90m2026-02-28T18:32:34.408Z[39m [36m[gateway][39m [36mlistening on ws://0.0.0.0:7860 (PID 237840)[39m
+[90m2026-02-28T18:32:34.411Z[39m [36m[gateway][39m [36mlog file: /tmp/moltbot/moltbot-2026-02-28.log[39m
+[90m2026-02-28T18:32:34.437Z[39m [35m[browser/service][39m [36mBrowser control service ready (profiles=2)[39m
