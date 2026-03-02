@@ -19,7 +19,7 @@ RUN apt-get update && \
 
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
-RUN pip install fastapi uvicorn pydantic
+RUN pip install fastapi uvicorn pydantic httpx
 
 COPY package.json pnpm-workspace.yaml .npmrc ./
 COPY ui/package.json ./ui/package.json
