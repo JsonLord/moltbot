@@ -338,7 +338,7 @@ export function renderApp(state: AppViewState) {
               loading: state.configLoading,
               saving: state.configApplying,
               onSave: async (payload) => {
-                const baseHash = state.configSnapshot?.baseHash;
+                const baseHash = state.configSnapshot?.hash;
                 if (!baseHash) return;
                 state.configApplying = true;
                 state.render();
@@ -348,7 +348,7 @@ export function renderApp(state: AppViewState) {
                     baseHash,
                     sessionKey: state.applySessionKey,
                   });
-                  await state.loadConfig(); // refresh
+                  await loadConfig(state); // refresh
                 } finally {
                   state.configApplying = false;
                   state.render();

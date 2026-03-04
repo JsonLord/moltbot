@@ -8,9 +8,9 @@ export type LlmConfigProps = {
   onSave: (payload: any) => void;
 };
 
-function getCustomOpenAiProvider(config: any) {
+function getLlmProviderConfig(config: any) {
   const providers = config?.models?.providers || {};
-  return providers["custom-openai"] || {};
+  return providers["blablador"] || providers["custom-openai"] || {};
 }
 
 export function renderLlmConfig(props: LlmConfigProps) {
@@ -22,19 +22,19 @@ export function renderLlmConfig(props: LlmConfigProps) {
     `;
   }
 
-  const customOpenAi = getCustomOpenAiProvider(props.config);
+  const providerConfig = getLlmProviderConfig(props.config);
 
   // Extract models
-  const models = customOpenAi.models || [];
-  let chatModel = "Qwen/Qwen2.5-Coder-3B-Instruct";
+  const models = providerConfig.models || [];
+  let chatModel = "alias-fast";
   if (models.length > 0) {
     chatModel = models[0].id;
   }
 
-  const baseUrl = customOpenAi.baseUrl || "http://127.0.0.1:8000/v1";
+  const baseUrl = providerConfig.baseUrl || "https://api.helmholtz-blablador.fz-juelich.de/v1";
 
   // The environment variable name
-  const apiKeyVar = customOpenAi.apiKey || "dummy-key";
+  const apiKeyVar = providerConfig.apiKey || "dummy-key";
 
   const handleSubmit = (e: Event) => {
     e.preventDefault();
@@ -48,7 +48,7 @@ export function renderLlmConfig(props: LlmConfigProps) {
     const payload = {
       models: {
         providers: {
-          "custom-openai": {
+          "blablador": {
             baseUrl: newBaseUrl,
             api: "openai-completions",
             apiKey: newApiKeyVar,
@@ -69,7 +69,7 @@ export function renderLlmConfig(props: LlmConfigProps) {
       agents: {
         defaults: {
           model: {
-            primary: `custom-openai/${newChatModel}`
+            primary: `blablador/${newChatModel}`
           }
         }
       }
@@ -99,7 +99,7 @@ export function renderLlmConfig(props: LlmConfigProps) {
             name="chatModel"
             .value=${chatModel}
             class="w-full p-2 rounded bg-[var(--color-bg-subtle)] border border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none"
-            placeholder="e.g. Qwen/Qwen2.5-Coder-3B-Instruct"
+            placeholder="e.g. alias-fast or alias-large"
             required
           />
           <p class="text-sm text-[var(--color-text-dim)]">The model identifier to use for the main conversational agent.</p>
@@ -112,11 +112,11 @@ export function renderLlmConfig(props: LlmConfigProps) {
             name="baseUrl"
             .value=${baseUrl}
             class="w-full p-2 rounded bg-[var(--color-bg-subtle)] border border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none"
-            placeholder="https://harvesthealth-harvesthealth-gemma-inference.hf.space/v1"
+            placeholder="https://api.helmholtz-blablador.fz-juelich.de/v1"
             required
           />
           <p class="text-sm text-[var(--color-text-dim)]">
-            The OpenAI-compatible endpoint. Note: <code>http://127.0.0.1:8000/v1</code> routes through the local sanitization proxy.
+            The OpenAI-compatible endpoint.
           </p>
         </div>
 

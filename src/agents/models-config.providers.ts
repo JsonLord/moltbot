@@ -364,19 +364,28 @@ export async function resolveImplicitProviders(params: {
 }): Promise<ModelsConfig["providers"]> {
   const providers: Record<string, ProviderConfig> = {};
 
-  providers["custom-openai"] = {
-    baseUrl: "http://127.0.0.1:8000/v1",
+  providers["blablador"] = {
+    baseUrl: "https://api.helmholtz-blablador.fz-juelich.de/v1",
     api: "openai-completions",
-    apiKey: "dummy-key", // Avoid missing apiKey error
+    apiKey: "dummy-key", // Avoid missing apiKey error; resolveEnvApiKey will load BLABLADOR_API_KEY
     models: [
       {
-        id: "Qwen/Qwen2.5-Coder-3B-Instruct",
-        name: "Qwen 2.5 Coder 3B Instruct",
+        id: "alias-fast",
+        name: "Blablador Fast (Utility)",
         reasoning: false,
         input: ["text"],
         cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
         contextWindow: 128000,
         maxTokens: 8192,
+      },
+      {
+        id: "alias-large",
+        name: "Blablador Large (Context)",
+        reasoning: false,
+        input: ["text"],
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+        contextWindow: 256000,
+        maxTokens: 16384,
       },
     ],
   };

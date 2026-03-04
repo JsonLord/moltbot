@@ -269,7 +269,7 @@ export function resolveEnvApiKey(provider: string): EnvApiKeyResult | null {
     return pick("QWEN_OAUTH_TOKEN") ?? pick("QWEN_PORTAL_API_KEY");
   }
 
-  if (normalized === "custom-openai") {
+  if (normalized === "blablador" || normalized === "custom-openai") {
     return (
       pick("BLABLADOR_API_KEY") ??
       pick("CUSTOM_OPENAI_API_KEY") ?? { apiKey: "dummy-key", source: "fallback dummy" }
