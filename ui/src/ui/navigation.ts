@@ -6,7 +6,7 @@ export const TAB_GROUPS = [
     label: "Control",
     tabs: ["overview", "channels", "instances", "sessions", "cron"],
   },
-  { label: "Agent", tabs: ["clawhub", "skills", "nodes"] },
+  { label: "Agent", tabs: ["llm", "clawhub", "skills", "nodes"] },
   { label: "Settings", tabs: ["config", "debug", "logs"] },
 ] as const;
 
@@ -16,6 +16,7 @@ export type Tab =
   | "instances"
   | "sessions"
   | "cron"
+  | "llm"
   | "clawhub"
   | "skills"
   | "nodes"
@@ -30,6 +31,7 @@ const TAB_PATHS: Record<Tab, string> = {
   instances: "/instances",
   sessions: "/sessions",
   cron: "/cron",
+  llm: "/llm",
   clawhub: "/clawhub",
   skills: "/skills",
   nodes: "/nodes",
@@ -116,6 +118,8 @@ export function iconForTab(tab: Tab): IconName {
       return "fileText";
     case "cron":
       return "loader";
+    case "llm":
+      return "cpu";
     case "clawhub":
       return "box";
     case "skills":
@@ -145,6 +149,8 @@ export function titleForTab(tab: Tab) {
       return "Sessions";
     case "cron":
       return "Cron Jobs";
+    case "llm":
+      return "LLM Setup";
     case "clawhub":
       return "ClawHub";
     case "skills":
@@ -176,6 +182,8 @@ export function subtitleForTab(tab: Tab) {
       return "Inspect active sessions and adjust per-session defaults.";
     case "cron":
       return "Schedule wakeups and recurring agent runs.";
+    case "llm":
+      return "Configure LLM provider endpoints and models.";
     case "clawhub":
       return "Browse and install skills from ClawHub.";
     case "skills":
