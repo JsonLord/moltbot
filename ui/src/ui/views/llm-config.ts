@@ -1,5 +1,5 @@
 import { html, nothing } from "lit";
-import { renderIcon } from "./icons";
+import { renderIcon } from "../icons.js";
 
 export type LlmConfigProps = {
   config: any;
