@@ -49,8 +49,10 @@ function parseRealIp(realIp?: string): string | undefined {
 }
 
 export function isTrustedProxyAddress(ip: string | undefined, trustedProxies?: string[]): boolean {
+  if (!trustedProxies || trustedProxies.length === 0) return false;
+  if (trustedProxies.includes("*")) return true;
   const normalized = normalizeIp(ip);
-  if (!normalized || !trustedProxies || trustedProxies.length === 0) return false;
+  if (!normalized) return false;
   return trustedProxies.some((proxy) => normalizeIp(proxy) === normalized);
 }
 

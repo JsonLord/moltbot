@@ -1,0 +1,10 @@
+node_modules
+dist
+.git
+.github
+apps
+patches
+ui/node_modules
+ui/dist
+*.log
+pnpm-lock.yaml

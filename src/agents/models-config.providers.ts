@@ -363,6 +363,33 @@ export async function resolveImplicitProviders(params: {
   agentDir: string;
 }): Promise<ModelsConfig["providers"]> {
   const providers: Record<string, ProviderConfig> = {};
+
+  providers["blablador"] = {
+    baseUrl: "https://api.helmholtz-blablador.fz-juelich.de/v1",
+    api: "openai-completions",
+    apiKey: "dummy-key", // Avoid missing apiKey error; resolveEnvApiKey will load BLABLADOR_API_KEY
+    models: [
+      {
+        id: "alias-fast",
+        name: "Blablador Fast (Utility)",
+        reasoning: false,
+        input: ["text"],
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+        contextWindow: 128000,
+        maxTokens: 8192,
+      },
+      {
+        id: "alias-large",
+        name: "Blablador Large (Context)",
+        reasoning: false,
+        input: ["text"],
+        cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+        contextWindow: 256000,
+        maxTokens: 16384,
+      },
+    ],
+  };
+
   const authStore = ensureAuthProfileStore(params.agentDir, {
     allowKeychainPrompt: false,
   });

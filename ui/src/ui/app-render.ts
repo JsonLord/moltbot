@@ -51,6 +51,8 @@ import {
   rotateDeviceToken,
 } from "./controllers/devices";
 import { renderSkills } from "./views/skills";
+import { renderClawhub } from "./views/clawhub";
+import { renderLlmConfig } from "./views/llm-config";
 import { renderChatControls, renderTab, renderThemeToggle } from "./app-render.helpers";
 import { loadChannels } from "./controllers/channels";
 import { loadPresence } from "./controllers/presence";
@@ -328,6 +330,35 @@ export function renderApp(state: AppViewState) {
               onRemove: (job) => removeCronJob(state, job),
               onLoadRuns: (jobId) => loadCronRuns(state, jobId),
             })
+          : nothing}
+
+        ${state.tab === "llm"
+          ? renderLlmConfig({
+              config: state.configSnapshot?.config || {},
+              loading: state.configLoading,
+              saving: state.configApplying,
+              onSave: async (payload) => {
+                const baseHash = state.configSnapshot?.hash;
+                if (!baseHash) return;
+                state.configApplying = true;
+                state.render();
+                try {
+                  await state.client.request("config.patch", {
+                    raw: JSON.stringify(payload),
+                    baseHash,
+                    sessionKey: state.applySessionKey,
+                  });
+                  await loadConfig(state); // refresh
+                } finally {
+                  state.configApplying = false;
+                  state.render();
+                }
+              }
+            })
+          : nothing}
+
+        ${state.tab === "clawhub"
+          ? renderClawhub({})
           : nothing}
 
         ${state.tab === "skills"

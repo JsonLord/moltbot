@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>API Documentation</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; line-height: 1.6; max-width: 800px; margin: auto; }
+    h1 { border-bottom: 2px solid #ccc; padding-bottom: 5px; }
+    .endpoint { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+    .method { display: inline-block; padding: 5px 10px; border-radius: 3px; color: white; font-weight: bold; margin-right: 10px; }
+    .get { background-color: #61affe; }
+    .post { background-color: #49cc90; }
+    pre { background: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>API Documentation</h1>
+  <p>Welcome to the API documentation. Below are the exposed endpoints for the application.</p>
+
+  <div class="endpoint">
+    <h2><span class="method get">GET</span> /health</h2>
+    <p>Health check endpoint to verify the service is running. This is used by Hugging Face to check if the space has transitioned from starting to running.</p>
+    <h3>Response</h3>
+    <pre><code>{
+  "status": "ok"
+}</code></pre>
+  </div>
+
+  <div class="endpoint">
+    <h2><span class="method get">GET</span> /api/clawhub/search</h2>
+    <p>Searches the ClawHub for available skills. Optionally takes a query parameter <code>?q=</code>.</p>
+    <h3>Response</h3>
+    <pre><code>{
+  "skills": [
+    {
+      "name": "string",
+      "description": "string",
+      "author": "string",
+      "version": "string"
+    }
+  ]
+}</code></pre>
+  </div>
+
+  <div class="endpoint">
+    <h2><span class="method post">POST</span> /api/clawhub/install</h2>
+    <p>Installs a skill from ClawHub.</p>
+    <h3>Request Body</h3>
+    <pre><code>{
+  "skillName": "string"
+}</code></pre>
+    <h3>Response</h3>
+    <pre><code>{
+  "message": "string"
+}</code></pre>
+  </div>
+
+  <div class="endpoint">
+    <h2><span class="method get">GET</span> /api-docs</h2>
+    <p>Returns this documentation page.</p>
+  </div>
+</body>
+</html>

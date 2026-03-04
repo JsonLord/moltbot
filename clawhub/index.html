@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ClawHub</title>
+  <link rel="stylesheet" href="/clawhub/style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>ClawHub</h1>
+      <p>Browse and install skills directly from the hub.</p>
+    </header>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search skills..." />
+      <button id="searchBtn">Search</button>
+    </div>
+
+    <div id="errorBox" class="error-box hidden"></div>
+    <div id="loadingBox" class="loading-box hidden">Loading...</div>
+
+    <div id="results" class="results-grid"></div>
+
+    <div id="rawOutput" class="raw-output hidden">
+      <h3>Terminal Output</h3>
+      <pre id="terminalText"></pre>
+    </div>
+  </div>
+
+  <script src="/clawhub/app.js"></script>
+</body>
+</html>

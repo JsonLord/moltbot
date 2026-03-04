@@ -149,6 +149,7 @@ export async function refreshActiveTab(host: SettingsHost) {
   if (host.tab === "sessions") await loadSessions(host as unknown as MoltbotApp);
   if (host.tab === "cron") await loadCron(host);
   if (host.tab === "skills") await loadSkills(host as unknown as MoltbotApp);
+  if (host.tab === "llm") await loadConfig(host as unknown as MoltbotApp);
   if (host.tab === "nodes") {
     await loadNodes(host as unknown as MoltbotApp);
     await loadDevices(host as unknown as MoltbotApp);

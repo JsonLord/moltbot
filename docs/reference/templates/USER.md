@@ -1,22 +1,19 @@
----
-summary: "User profile record"
-read_when:
-  - Bootstrapping a workspace manually
----
 # USER.md - About Your Human
 
-*Learn about the person you're helping. Update this as you go.*
+- **Name:** <your name>
+- **What to call them:** <preferred name>
+- **Pronouns:** <if specified>
+- **Timezone:** <timezone, e.g., PST (America/Los_Angeles)>. All displayed
+  times must be converted to this timezone, including cron logs, calendar
+  events, and timestamps from databases stored in UTC.
+- **Notes:** <schedule patterns, e.g., "Early bird, usually up around 7am">
 
-- **Name:** 
-- **What to call them:** 
-- **Pronouns:** *(optional)*
-- **Timezone:** 
-- **Notes:** 
+## Email Accounts
+- **<work-email>**: Work
+- **<creator-email>**: Creator / public
+- Personal email addresses are stored in MEMORY.md (private chat only)
+  to avoid exposure in group chats.
 
 ## Context
 
-*(What do they care about? What projects are they working on? What annoys them? What makes them laugh? Build this over time.)*
-
----
-
-The more you know, the better you can help. But remember — you're learning about a person, not building a dossier. Respect the difference.
+*(Add personal context as you learn it over time)*
