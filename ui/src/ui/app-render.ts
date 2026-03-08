@@ -51,6 +51,7 @@ import {
   rotateDeviceToken,
 } from "./controllers/devices";
 import { renderSkills } from "./views/skills";
+import { renderHub } from "./views/hub.js";
 import { renderChatControls, renderTab, renderThemeToggle } from "./app-render.helpers";
 import { loadChannels } from "./controllers/channels";
 import { loadPresence } from "./controllers/presence";
@@ -327,6 +328,20 @@ export function renderApp(state: AppViewState) {
               onRun: (job) => runCronJob(state, job),
               onRemove: (job) => removeCronJob(state, job),
               onLoadRuns: (jobId) => loadCronRuns(state, jobId),
+            })
+          : nothing}
+
+        ${state.tab === "hub"
+          ? renderHub({
+              loading: state.hubLoading,
+              report: state.hubReport,
+              error: state.hubError,
+              searchQuery: state.hubSearchQuery,
+              busyKey: state.hubBusyKey,
+              onSearchChange: (next) => (state.hubSearchQuery = next),
+              onSearch: () => state.handleLoadHub(),
+              onInstall: (slug) => state.handleHubInstall(slug),
+              onTest: (slug) => state.handleHubTest(slug),
             })
           : nothing}
 

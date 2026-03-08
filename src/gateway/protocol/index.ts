@@ -157,6 +157,12 @@ import {
   SkillsStatusParamsSchema,
   type SkillsUpdateParams,
   SkillsUpdateParamsSchema,
+  type HubSearchParams,
+  HubSearchParamsSchema,
+  type HubInstallParams,
+  HubInstallParamsSchema,
+  type HubTestParams,
+  HubTestParamsSchema,
   type Snapshot,
   SnapshotSchema,
   type StateVersion,
@@ -269,6 +275,9 @@ export const validateSkillsBinsParams = ajv.compile<SkillsBinsParams>(SkillsBins
 export const validateSkillsInstallParams =
   ajv.compile<SkillsInstallParams>(SkillsInstallParamsSchema);
 export const validateSkillsUpdateParams = ajv.compile<SkillsUpdateParams>(SkillsUpdateParamsSchema);
+export const validateHubSearchParams = ajv.compile<HubSearchParams>(HubSearchParamsSchema);
+export const validateHubInstallParams = ajv.compile<HubInstallParams>(HubInstallParamsSchema);
+export const validateHubTestParams = ajv.compile<HubTestParams>(HubTestParamsSchema);
 export const validateCronListParams = ajv.compile<CronListParams>(CronListParamsSchema);
 export const validateCronStatusParams = ajv.compile<CronStatusParams>(CronStatusParamsSchema);
 export const validateCronAddParams = ajv.compile<CronAddParams>(CronAddParamsSchema);
@@ -412,6 +421,9 @@ export {
   SkillsStatusParamsSchema,
   SkillsInstallParamsSchema,
   SkillsUpdateParamsSchema,
+  HubSearchParamsSchema,
+  HubInstallParamsSchema,
+  HubTestParamsSchema,
   CronJobSchema,
   CronListParamsSchema,
   CronStatusParamsSchema,
@@ -487,6 +499,9 @@ export type {
   SkillsBinsResult,
   SkillsInstallParams,
   SkillsUpdateParams,
+  HubSearchParams,
+  HubInstallParams,
+  HubTestParams,
   NodePairRejectParams,
   NodePairVerifyParams,
   NodeListParams,

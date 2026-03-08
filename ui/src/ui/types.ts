@@ -530,3 +530,17 @@ export type LogEntry = {
   message?: string | null;
   meta?: Record<string, unknown> | null;
 };
+
+export type HubSkillEntry = {
+  id: string;
+  name: string;
+  description: string;
+  createdAt?: number;
+  updatedAt?: number;
+  version: string;
+  author: string;
+};
+
+export type HubSearchReport = {
+  skills: HubSkillEntry[];
+};
