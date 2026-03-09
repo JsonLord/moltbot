@@ -39,11 +39,12 @@ EXPOSE 7860
 
 # Create default config to avoid "Missing config" error
 RUN mkdir -p /home/node/.moltbot && \
-    echo '{"gateway": {"mode": "local", "bind": "lan", "port": 7860}}' > /home/node/.moltbot/moltbot.json && \
+    echo '{"gateway": {"mode": "local", "bind": "lan", "port": 7860, "trustedProxies": ["*"], "controlUi": {"dangerouslyDisableDeviceAuth": true}}}' > /home/node/.moltbot/moltbot.json && \
     chown -R node:node /home/node/.moltbot
 
 ENV MOLTBOT_CONFIG_PATH=/home/node/.moltbot/moltbot.json
 ENV CLAWDBOT_GATEWAY_TOKEN=moltbot
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 # Security hardening: Run as non-root user
 # The node:22-bookworm image includes a 'node' user (uid 1000)
@@ -51,4 +52,4 @@ ENV CLAWDBOT_GATEWAY_TOKEN=moltbot
 USER node
 
 # Start the gateway in the foreground.
-CMD ["node", "moltbot.mjs", "gateway", "run", "--bind", "lan", "--port", "7860"]
+CMD ["node", "moltbot.mjs", "gateway", "run", "--bind", "lan", "--port", "7860", "--allow-unconfigured"]
