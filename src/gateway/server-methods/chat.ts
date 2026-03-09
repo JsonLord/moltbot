@@ -492,7 +492,7 @@ export const chatHandlers: GatewayRequestHandlers = {
           runId: clientRunId,
           abortSignal: abortController.signal,
           images: parsedImages.length > 0 ? parsedImages : undefined,
-          disableBlockStreaming: true,
+          disableBlockStreaming: false,
           onAgentRunStart: () => {
             agentRunStarted = true;
           },
