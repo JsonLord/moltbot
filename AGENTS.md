@@ -165,8 +165,7 @@
 ## Deployment to Hugging Face Spaces
 - **Space:** harvesthealth/xxg
 - **API Endpoints:**
-  - `hub.search`: Proxies requests to ClawHub registry via `http://127.0.0.1:8000/v1/hub/search` (internal FastAPI server running in HF space).
-  - `hub.install`: Downloads skills into `~/.clawdbot/skills/`.
-  - `hub.test`: Evaluates newly downloaded skills and reads API keys via `process.env` to utilize injected Hugging Face Space secrets.
+  - `hub.search`: Direct HTTPS queries to `https://clawhub.ai/api/v1/search`.
+  - `hub.install`: Directly downloads zip via `https://clawhub.ai/api/v1/download` and extracts to `/app/skills/` (when `SPACE_ID` is present).
+  - `hub.test`: Evaluates newly downloaded skills from `/app/skills/` and reads API keys via `process.env` to utilize injected Hugging Face Space secrets.
 - **Port:** The main gateway binds to port 7860.
-- **Internal API:** A local proxy (clawhub_api.py) runs on port 8000 in the space.

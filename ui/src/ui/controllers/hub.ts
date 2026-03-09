@@ -41,7 +41,10 @@ export async function installHubSkill(
   state.hubBusyKey = slug;
   state.hubError = null;
   try {
-    await state.client.request("hub.install", { slug });
+    const res = await state.client.request("hub.install", { slug }) as any;
+    if (res?.message) {
+        state.hubError = res.message; // Use error field for displaying success message in UI temporarily since no toast exists
+    }
   } catch (err) {
     state.hubError = getErrorMessage(err);
   } finally {
@@ -57,7 +60,10 @@ export async function testHubSkill(
   state.hubBusyKey = slug;
   state.hubError = null;
   try {
-    await state.client.request("hub.test", { slug });
+    const res = await state.client.request("hub.test", { slug }) as any;
+    if (res?.message) {
+        state.hubError = res.message;
+    }
   } catch (err) {
     state.hubError = getErrorMessage(err);
   } finally {

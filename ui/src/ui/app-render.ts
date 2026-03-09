@@ -83,6 +83,7 @@ import {
 import { loadCronRuns, toggleCronJob, runCronJob, removeCronJob, addCronJob } from "./controllers/cron";
 import { loadDebug, callDebugMethod } from "./controllers/debug";
 import { loadLogs } from "./controllers/logs";
+import { searchHub, installHubSkill, testHubSkill } from "./controllers/hub.js";
 
 const AVATAR_DATA_RE = /^data:/i;
 const AVATAR_HTTP_RE = /^https?:\/\//i;
@@ -339,9 +340,9 @@ export function renderApp(state: AppViewState) {
               searchQuery: state.hubSearchQuery,
               busyKey: state.hubBusyKey,
               onSearchChange: (next) => (state.hubSearchQuery = next),
-              onSearch: () => state.handleLoadHub(),
-              onInstall: (slug) => state.handleHubInstall(slug),
-              onTest: (slug) => state.handleHubTest(slug),
+              onSearch: () => searchHub(state),
+              onInstall: (slug) => installHubSkill(state, slug),
+              onTest: (slug) => testHubSkill(state, slug),
             })
           : nothing}
 

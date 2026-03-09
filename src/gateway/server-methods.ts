@@ -6,6 +6,7 @@ import { channelsHandlers } from "./server-methods/channels.js";
 import { chatHandlers } from "./server-methods/chat.js";
 import { configHandlers } from "./server-methods/config.js";
 import { connectHandlers } from "./server-methods/connect.js";
+import { hubHandlers } from "./server-methods/hub.js";
 import { cronHandlers } from "./server-methods/cron.js";
 import { deviceHandlers } from "./server-methods/devices.js";
 import { execApprovalsHandlers } from "./server-methods/exec-approvals.js";
@@ -151,6 +152,7 @@ export const coreGatewayHandlers: GatewayRequestHandlers = {
   ...voicewakeHandlers,
   ...healthHandlers,
   ...channelsHandlers,
+  ...hubHandlers,
   ...chatHandlers,
   ...cronHandlers,
   ...deviceHandlers,

@@ -129,6 +129,11 @@ export type AppViewState = {
   skillEdits: Record<string, string>;
   skillMessages: Record<string, SkillMessage>;
   skillsBusyKey: string | null;
+  hubLoading: boolean;
+  hubReport: any | null;
+  hubError: string | null;
+  hubBusyKey: string | null;
+  hubSearchQuery: string;
   debugLoading: boolean;
   debugStatus: StatusSummary | null;
   debugHealth: HealthSnapshot | null;
