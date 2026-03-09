@@ -49,9 +49,7 @@ function parseRealIp(realIp?: string): string | undefined {
 }
 
 function ip4ToInt(ip: string): number {
-  return (
-    ip.split(".").reduce((acc, octet) => (acc << 8) + parseInt(octet, 10), 0) >>> 0
-  );
+  return ip.split(".").reduce((acc, octet) => (acc << 8) + parseInt(octet, 10), 0) >>> 0;
 }
 
 function isIpInCidr(ip: string, cidr: string): boolean {

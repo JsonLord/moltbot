@@ -779,15 +779,21 @@ export async function runEmbeddedAttempt(
           // Only pass images option if there are actually images to pass
           // This avoids potential issues with models that don't expect the images parameter
           if (imageResult.images.length > 0) {
-            log.debug(`embedded run prompt (with ${imageResult.images.length} images): ${effectivePrompt.slice(0, 500)}`);
+            log.debug(
+              `embedded run prompt (with ${imageResult.images.length} images): ${effectivePrompt.slice(0, 500)}`,
+            );
             await abortable(activeSession.prompt(effectivePrompt, { images: imageResult.images }));
           } else {
             log.debug(`embedded run prompt: ${effectivePrompt.slice(0, 500)}`);
             await abortable(activeSession.prompt(effectivePrompt));
           }
-          log.debug(`embedded run prompt success: runId=${params.runId} sessionId=${params.sessionId}`);
+          log.debug(
+            `embedded run prompt success: runId=${params.runId} sessionId=${params.sessionId}`,
+          );
         } catch (err) {
-          log.error(`embedded run prompt error: runId=${params.runId} sessionId=${params.sessionId} error=${String(err)}`);
+          log.error(
+            `embedded run prompt error: runId=${params.runId} sessionId=${params.sessionId} error=${String(err)}`,
+          );
           promptError = err;
         } finally {
           log.debug(
