@@ -33,21 +33,32 @@ export const hubHandlers: GatewayRequestHandlers = {
 
     log.info(`Searching hub for query: ${query}`);
     try {
-      const response = await fetch(
-        `https://clawhub.ai/api/v1/search?q=${encodeURIComponent(query)}`,
-      );
+      let url = `https://clawhub.ai/api/v1/skills?limit=20&sort=trending`;
+      if (query && query.trim() !== "") {
+        url = `https://clawhub.ai/api/v1/search?q=${encodeURIComponent(query)}&limit=20`;
+      }
+
+      const response = await fetch(url);
       if (!response.ok) {
-        throw new Error(`Hub search failed: HTTP ${response.status}`);
+        throw new Error(`Hub API failed: HTTP ${response.status}`);
       }
       const data = await response.json();
 
+      const rawSkills = data.results || data.items || [];
+
       // Map API response to HubSkillEntry
-      const skills = (data.results || []).map((s: any) => ({
+      const skills = rawSkills.map((s: any) => ({
         id: s.slug || s.id, // Using slug as ID since we need it for download
-        name: s.name || s.slug,
-        description: s.description || "",
-        version: s.version || "1.0",
-        author: s.author || "unknown",
+        name: s.displayName || s.name || s.slug,
+        description: s.summary || s.description || "",
+        version: s.latestVersion?.version || s.version || "1.0",
+        author: s.owner?.handle || s.author || "unknown",
+        createdAt: s.createdAt,
+        updatedAt: s.updatedAt,
+        downloads: s.stats?.downloads || 0,
+        stars: s.stats?.stars || 0,
+        installs: s.stats?.installsAllTime || 0,
+        tags: s.tags || {},
       }));
 
       respond(true, { skills }, undefined);

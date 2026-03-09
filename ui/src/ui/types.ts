@@ -539,6 +539,10 @@ export type HubSkillEntry = {
   updatedAt?: number;
   version: string;
   author: string;
+  downloads?: number;
+  stars?: number;
+  installs?: number;
+  tags?: Record<string, string>;
 };
 
 export type HubSearchReport = {
