@@ -439,9 +439,7 @@ export function createConfigIO(overrides: ConfigIoDeps = {}) {
             applyTalkApiKey(
               applyModelDefaults(
                 applyAgentDefaults(
-                  applySessionDefaults(
-                    applyLoggingDefaults(applyMessageDefaults(validated.config)),
-                  ),
+                  applySessionDefaults(applyLoggingDefaults(applyMessageDefaults(validated.config))),
                 ),
               ),
             ),

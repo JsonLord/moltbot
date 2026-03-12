@@ -5,11 +5,7 @@ import type { loadConfig } from "../config/config.js";
 
 export async function runLlmConnectionTest(params: {
   cfg: ReturnType<typeof loadConfig>;
-  log: {
-    info: (msg: string, meta?: Record<string, unknown>) => void;
-    warn: (msg: string) => void;
-    error: (msg: string) => void;
-  };
+  log: { info: (msg: string, meta?: Record<string, unknown>) => void; warn: (msg: string) => void; error: (msg: string) => void };
 }) {
   const { provider, model } = resolveConfiguredModelRef({
     cfg: params.cfg,
@@ -36,7 +32,7 @@ export async function runLlmConnectionTest(params: {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
+        "Authorization": `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: model,
@@ -47,18 +43,14 @@ export async function runLlmConnectionTest(params: {
 
     const duration = Date.now() - start;
     if (response.ok) {
-      const data = (await response.json()) as any;
+      const data = await response.json() as any;
       const text = data.choices?.[0]?.message?.content || JSON.stringify(data);
       params.log.info(`[test] connection successful (${duration}ms): ${text.replace(/\n/g, " ")}`, {
-        consoleMessage: chalk.green(
-          `[test] connection successful (${duration}ms): ${chalk.white(text.replace(/\n/g, " "))}`,
-        ),
+        consoleMessage: chalk.green(`[test] connection successful (${duration}ms): ${chalk.white(text.replace(/\n/g, " "))}`),
       });
     } else {
       const errorText = await response.text();
-      params.log.error(
-        `[test] connection failed (${duration}ms): ${response.status} ${response.statusText} - ${errorText}`,
-      );
+      params.log.error(`[test] connection failed (${duration}ms): ${response.status} ${response.statusText} - ${errorText}`);
     }
   } catch (err) {
     params.log.error(`[test] connection error: ${String(err)}`);

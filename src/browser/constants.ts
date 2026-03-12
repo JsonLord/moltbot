@@ -1,4 +1,4 @@
-export const DEFAULT_CLAWD_BROWSER_ENABLED = process.env.SPACE_ID ? false : true;
+export const DEFAULT_CLAWD_BROWSER_ENABLED = true;
 export const DEFAULT_BROWSER_EVALUATE_ENABLED = true;
 export const DEFAULT_CLAWD_BROWSER_COLOR = "#FF4500";
 export const DEFAULT_CLAWD_BROWSER_PROFILE_NAME = "clawd";

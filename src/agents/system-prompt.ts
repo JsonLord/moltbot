@@ -147,6 +147,7 @@ export function buildAgentSystemPrompt(params: {
   ttsHint?: string;
   /** Controls which hardcoded sections to include. Defaults to "full". */
   promptMode?: PromptMode;
+  cliDocsPrompt?: string;
   runtimeInfo?: {
     agentId?: string;
     host?: string;
@@ -295,6 +296,7 @@ export function buildAgentSystemPrompt(params: {
   const reasoningLevel = params.reasoningLevel ?? "off";
   const userTimezone = params.userTimezone?.trim();
   const skillsPrompt = params.skillsPrompt?.trim();
+  const cliDocsPrompt = params.cliDocsPrompt?.trim();
   const heartbeatPrompt = params.heartbeatPrompt?.trim();
   const heartbeatPromptLine = heartbeatPrompt
     ? `Heartbeat prompt: ${heartbeatPrompt}`
@@ -371,6 +373,16 @@ export function buildAgentSystemPrompt(params: {
     "",
     ...skillsSection,
     ...memorySection,
+    ...(cliDocsPrompt
+      ? [
+          "",
+          "## CLI Documentations and External Endpoints",
+          "The following CLI documentations describe external endpoints and scripts you can call.",
+          "\n🟦 1. Direct Shell Invocation (the most common pattern)\nAgents simply call commands like:\n\nCode\nls -la\ngit status\npython script.py\ncurl https://api...\nThis works because:\n\nEvery environment already has a shell.\n\nTools expose stable, human-readable output.\n\nNo schema or server setup is required.\n\nDebugging is trivial—just read the terminal output.\n\nThis is why many practitioners still prefer CLI over MCP. \n\n🟦 2. CLI as a “universal adapter”\nAgents treat CLI tools as modular capabilities:\n\nCapability\tCLI Tool\tWhy Agents Use It\nFile ops\tls, cat, sed, awk\tSimple, predictable, ubiquitous\nGit\tgit\tRich, stable interface\nNetworking\tcurl, wget\tEasy to script, universal\nBuild systems\tmake, npm, cargo\tAlready CLI-first\nSystem info\tps, df, top\tNo extra API needed\nThis avoids the overhead of writing MCP servers for each tool. \n\n🟦 3. Agents parse stdout/stderr as their “API”\nInstead of structured MCP schemas, agents:\n\nRead stdout text\n\nInfer structure (tables, JSON, logs)\n\nUse regex or LLM parsing to extract meaning\n\nMany CLI tools already support --json or --output json, which makes this even easier.\n\n🟦 4. CLI wrappers for safety and determinism\nDevelopers often wrap commands in small scripts:\n\nsafe-git.sh\n\nrun-tests.sh\n\ndeploy.sh\n\nAgents call the wrapper instead of raw commands.\nThis gives:\n\nGuardrails\n\nSanitized output\n\nPredictable behavior\n\nThis is functionally similar to MCP tools but without the MCP layer.\n\nNote: The '@gradio/client' package is natively installed in this agent's environment, so you can write node.js scripts that import { Client } from '@gradio/client' to utilize gradio api endpoints specified in the documentations.",
+          "",
+          cliDocsPrompt,
+        ]
+      : []),
     // Skip self-update for subagent/none modes
     hasGateway && !isMinimal ? "## Moltbot Self-Update" : "",
     hasGateway && !isMinimal
