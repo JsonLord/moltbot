@@ -242,6 +242,39 @@ export function createGatewayHttpServer(opts: {
       return;
     }
 
+    if (req.url === "/api-docs") {
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.end(
+        JSON.stringify({
+          endpoints: {
+            "/health": {
+              method: "GET",
+              purpose: "Check gateway health status.",
+            },
+            "/v1/chat/completions": {
+              method: "POST",
+              purpose: "OpenAI-compatible chat completions API.",
+              request: {
+                model: "alias-fast",
+                messages: [{ role: "user", content: "hello" }],
+              },
+              response: {
+                id: "chatcmpl-...",
+                choices: [{ message: { content: "hi" } }],
+              },
+            },
+            websocket: {
+              method: "WS",
+              path: "/",
+              purpose: "Connect to the Moltbot Gateway RPC.",
+            },
+          },
+        }),
+      );
+      return;
+    }
+
     try {
       const configSnapshot = loadConfig();
       const trustedProxies = configSnapshot.gateway?.trustedProxies ?? [];
