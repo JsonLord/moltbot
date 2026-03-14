@@ -161,3 +161,11 @@
 - Publish: `npm publish --access public --otp="<otp>"` (run from the package dir).
 - Verify without local npmrc side effects: `npm view <pkg> version --userconfig "$(mktemp)"`.
 - Kill the tmux session after publish.
+
+## Deployment Configuration & API Endpoints
+- **Target Hugging Face Space**: harvesthealth/xxg
+- **Gateway Binding**: The gateway must bind to all interfaces (using `--bind lan` or `0.0.0.0`) to be accessible when deployed via Docker to Hugging Face.
+- **Health Endpoint**: The project requires a `/health` endpoint returning `{"status": "ok"}` for the Hugging Face Space to transition from 'starting' to 'running'.
+- **Deployment Command**: `hf upload harvesthealth/xxg . --repo-type=space`
+- **Docker SDK**: Hugging Face Spaces for this project use the Docker SDK and must listen on port 7860.
+- **API Documentation**: Every application must expose a `/api-docs` endpoint documenting all available functionalities.
