@@ -9,6 +9,39 @@ cat << 'EOF' > /home/node/.moltbot/moltbot.json
     "controlUi": {
       "dangerouslyDisableDeviceAuth": true
     }
+  },
+  "models": {
+    "providers": {
+      "blablador": {
+        "baseUrl": "https://api.helmholtz-blablador.fz-juelich.de/v1",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "alias-large",
+            "name": "Blablador Large",
+            "reasoning": false,
+            "input": ["text"],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 128000,
+            "maxTokens": 4096
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "models": {
+        "alias-large": {
+          "alias": "chat"
+        }
+      }
+    }
   }
 }
 EOF

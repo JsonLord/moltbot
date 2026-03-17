@@ -1,0 +1,6 @@
+[submodule "skills/dot-do-ai/repo"]
+	path = skills/dot-do-ai/repo
+	url = https://github.com/dot-do/ai.git
+[submodule "openclaw-master-skills"]
+	path = openclaw-master-skills
+	url = https://github.com/LeoYeAI/openclaw-master-skills.git
