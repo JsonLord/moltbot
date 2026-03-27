@@ -161,3 +161,11 @@
 - Publish: `npm publish --access public --otp="<otp>"` (run from the package dir).
 - Verify without local npmrc side effects: `npm view <pkg> version --userconfig "$(mktemp)"`.
 - Kill the tmux session after publish.
+
+## Deployment to Hugging Face Spaces
+- **Space:** harvesthealth/xxg
+- **API Endpoints:**
+  - `hub.search`: Direct HTTPS queries to `https://clawhub.ai/api/v1/search`.
+  - `hub.install`: Directly downloads zip via `https://clawhub.ai/api/v1/download` and extracts to `/app/skills/` (when `SPACE_ID` is present).
+  - `hub.test`: Evaluates newly downloaded skills from `/app/skills/` and reads API keys via `process.env` to utilize injected Hugging Face Space secrets.
+- **Port:** The main gateway binds to port 7860.

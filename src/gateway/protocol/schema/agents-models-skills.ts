@@ -74,6 +74,27 @@ export const SkillsInstallParamsSchema = Type.Object(
   { additionalProperties: false },
 );
 
+export const HubSearchParamsSchema = Type.Object(
+  {
+    query: Type.String(),
+  },
+  { additionalProperties: false },
+);
+
+export const HubInstallParamsSchema = Type.Object(
+  {
+    slug: NonEmptyString,
+  },
+  { additionalProperties: false },
+);
+
+export const HubTestParamsSchema = Type.Object(
+  {
+    slug: NonEmptyString,
+  },
+  { additionalProperties: false },
+);
+
 export const SkillsUpdateParamsSchema = Type.Object(
   {
     skillKey: NonEmptyString,

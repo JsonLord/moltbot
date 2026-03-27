@@ -51,6 +51,7 @@ import {
   rotateDeviceToken,
 } from "./controllers/devices";
 import { renderSkills } from "./views/skills";
+import { renderHub } from "./views/hub.js";
 import { renderChatControls, renderTab, renderThemeToggle } from "./app-render.helpers";
 import { loadChannels } from "./controllers/channels";
 import { loadPresence } from "./controllers/presence";
@@ -82,6 +83,7 @@ import {
 import { loadCronRuns, toggleCronJob, runCronJob, removeCronJob, addCronJob } from "./controllers/cron";
 import { loadDebug, callDebugMethod } from "./controllers/debug";
 import { loadLogs } from "./controllers/logs";
+import { searchHub, installHubSkill, testHubSkill } from "./controllers/hub.js";
 
 const AVATAR_DATA_RE = /^data:/i;
 const AVATAR_HTTP_RE = /^https?:\/\//i;
@@ -327,6 +329,20 @@ export function renderApp(state: AppViewState) {
               onRun: (job) => runCronJob(state, job),
               onRemove: (job) => removeCronJob(state, job),
               onLoadRuns: (jobId) => loadCronRuns(state, jobId),
+            })
+          : nothing}
+
+        ${state.tab === "hub"
+          ? renderHub({
+              loading: state.hubLoading,
+              report: state.hubReport,
+              error: state.hubError,
+              searchQuery: state.hubSearchQuery,
+              busyKey: state.hubBusyKey,
+              onSearchChange: (next) => (state.hubSearchQuery = next),
+              onSearch: () => searchHub(state),
+              onInstall: (slug) => installHubSkill(state, slug),
+              onTest: (slug) => testHubSkill(state, slug),
             })
           : nothing}
 

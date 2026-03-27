@@ -222,6 +222,12 @@ export class MoltbotApp extends LitElement {
   @state() skillsBusyKey: string | null = null;
   @state() skillMessages: Record<string, SkillMessage> = {};
 
+  @state() hubLoading = false;
+  @state() hubReport: any | null = null;
+  @state() hubError: string | null = null;
+  @state() hubBusyKey: string | null = null;
+  @state() hubSearchQuery = "";
+
   @state() debugLoading = false;
   @state() debugStatus: StatusSummary | null = null;
   @state() debugHealth: HealthSnapshot | null = null;
