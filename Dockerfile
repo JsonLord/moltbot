@@ -16,12 +16,15 @@ RUN if [ -n "$CLAWDBOT_DOCKER_APT_PACKAGES" ]; then \
       rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*; \
     fi
 
+ARG CACHEBUST=1
+RUN echo "cache bust $CACHEBUST"
+
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY ui/package.json ./ui/package.json
 COPY patches ./patches
 COPY scripts ./scripts
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 COPY . .
 RUN CLAWDBOT_A2UI_SKIP_MISSING=1 pnpm build
@@ -37,4 +40,12 @@ ENV NODE_ENV=production
 # This reduces the attack surface by preventing container escape via root privileges
 USER node
 
-CMD ["node", "dist/index.js"]
+# Install Python for proxy logic (Hugging face)
+USER root
+RUN apt-get update && apt-get install -y python3 python3-pip && rm -rf /var/lib/apt/lists/*
+RUN python3 -m pip install fastapi uvicorn pydantic httpx --break-system-packages
+USER node
+
+EXPOSE 7860
+
+CMD ["sh", "./start.sh"]
